@@ -1,0 +1,15 @@
+Data Assumptions for Synthetic Vahan Dashboard Dataset
+
+1. Data Source: The data is synthetically generated to replicate the structure and content of the public Vahan Dashboard, as no direct download link was available.
+
+2. Time Frame: The dataset covers a period of three years, from January 1, 2022, to the current date, to allow for the calculation of Year-over-Year (YoY) and Quarter-over-Quarter (QoQ) growth metrics.
+
+3. Granularity: The data is provided at a monthly level, with each entry representing the total registrations for a specific manufacturer, vehicle type, and month.
+
+4. Vehicle Types: The dataset includes three vehicle categories as specified in the assignment: 2W (Two-wheelers), 3W (Three-wheelers), and 4W (Four-wheelers).
+
+5. Manufacturers: The manufacturers are fictional but representative of the real market leaders in each vehicle category. The same manufacturer may appear in multiple categories (e.g., Bajaj in both 2W and 3W).
+
+6. Registration Numbers: The registration numbers are random integers within a specific range for each vehicle type, scaled to provide a semblance of realism (e.g., 2W registrations are higher than 3W registrations). No specific market trends or seasonal variations are embedded in the data.
+
+7. Missing Data: The synthetic dataset does not contain any missing or null values. Real-world data would require additional cleaning and handling of missing values.
