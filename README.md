@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # **Vahan Dashboard**
 
 ## **Project Objective**
@@ -81,6 +80,3 @@ If this project were to be continued, the following features would be considered
 
 * **Video Walkthrough**: A short screen recording (max 5 minutes) is available at the following link: \[Insert YouTube/Drive Link Here\]  
 * **Key Insights from the Video**: The video explains what was built, how to use the dashboard, and key investor insights discovered from the data.  
-=======
-# vahan-dashboard-internship
->>>>>>> bf9f718d206c53d6cb2cfad78127edb2b97e7e10
