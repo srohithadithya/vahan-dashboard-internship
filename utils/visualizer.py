@@ -4,15 +4,6 @@ import pandas as pd
 def create_trend_chart(df, title, y_col, y_title):
     """
     Creates an interactive line chart showing registration trends over time.
-
-    Args:
-        df (pd.DataFrame): The DataFrame to plot.
-        title (str): The title of the chart.
-        y_col (str): The column to be plotted on the y-axis (e.g., 'Registrations').
-        y_title (str): The label for the y-axis.
-
-    Returns:
-        plotly.graph_objects.Figure: The Plotly figure object.
     """
     if df.empty:
         return px.line(title="No data available to display")
@@ -28,13 +19,6 @@ def create_trend_chart(df, title, y_col, y_title):
 def create_market_share_pie_chart(df, date_range):
     """
     Creates a pie chart showing the market share of each manufacturer.
-
-    Args:
-        df (pd.DataFrame): The DataFrame containing market share data.
-        date_range (tuple): The date range for the data.
-
-    Returns:
-        plotly.graph_objects.Figure: The Plotly figure object.
     """
     if df.empty:
         return px.pie(title="No data to display market share")
@@ -50,22 +34,15 @@ def create_market_share_pie_chart(df, date_range):
 def create_growth_bar_chart(df, title, y_col):
     """
     Creates a bar chart showing YoY or QoQ growth rates.
-
-    Args:
-        df (pd.DataFrame): The DataFrame to plot.
-        title (str): The title of the chart.
-        y_col (str): The growth column to plot on the y-axis (e.g., 'YoY_Growth').
-
-    Returns:
-        plotly.graph_objects.Figure: The Plotly figure object.
     """
     if df.empty:
         return px.bar(title="No growth data to display")
     
-    # Filter out NaNs from initial periods where growth can't be calculated
     df = df.dropna(subset=[y_col])
 
-    # Convert growth from decimal to percentage for better visualization
+    if df.empty:
+        return px.bar(title="No growth data available for the selected period")
+
     df[y_col] = df[y_col] * 100
 
     fig = px.bar(df, x='Manufacturer', y=y_col, color='Vehicle_Type',

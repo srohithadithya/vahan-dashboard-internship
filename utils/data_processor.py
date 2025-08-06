@@ -13,29 +13,62 @@ def process_vahan_data(raw_data_path):
         
     df['Date'] = pd.to_datetime(df['Date'])
     
-    # Sort data for correct calculations
     df = df.sort_values(by=['Manufacturer', 'Vehicle_Type', 'Date'])
 
-    # Calculate YoY and QoQ growth for registrations
     df['YoY_Growth'] = df.groupby(['Manufacturer', 'Vehicle_Type'])['Registrations'].pct_change(periods=12)
     df['QoQ_Growth'] = df.groupby(['Manufacturer', 'Vehicle_Type'])['Registrations'].pct_change(periods=3)
     
-    # For overall growth, first aggregate by date
     total_registrations_by_date = df.groupby('Date')['Registrations'].sum().reset_index()
     total_registrations_by_date['YoY_Growth_Total'] = total_registrations_by_date['Registrations'].pct_change(periods=12)
     total_registrations_by_date['QoQ_Growth_Total'] = total_registrations_by_date['Registrations'].pct_change(periods=3)
 
-    # Merge total growth metrics back into the main DataFrame
     df = pd.merge(df, total_registrations_by_date, on='Date', how='left', suffixes=('', '_Total_Calc'))
     df.rename(columns={'YoY_Growth_Total_Calc': 'YoY_Growth_Total', 'QoQ_Growth_Total_Calc': 'QoQ_Growth_Total'}, inplace=True)
     df.drop(columns=['Registrations_Total_Calc'], inplace=True)
     
     return df
 
+def calculate_growth_metrics(df):
+    """
+    Calculates YoY and QoQ growth for registrations.
+    This function is a wrapper for a pre-processed dataframe.
+    """
+    if df.empty:
+        return df
+
+    df['YoY_Growth'] = df.groupby(['Manufacturer', 'Vehicle_Type'])['Registrations'].pct_change(periods=12)
+    df['QoQ_Growth'] = df.groupby(['Manufacturer', 'Vehicle_Type'])['Registrations'].pct_change(periods=3)
+    
+    total_registrations_by_date = df.groupby('Date')['Registrations'].sum().reset_index()
+    total_registrations_by_date['YoY_Growth_Total'] = total_registrations_by_date['Registrations'].pct_change(periods=12)
+    total_registrations_by_date['QoQ_Growth_Total'] = total_registrations_by_date['Registrations'].pct_change(periods=3)
+
+    df = pd.merge(df, total_registrations_by_date, on='Date', how='left', suffixes=('', '_Total_Calc'))
+    df.rename(columns={'YoY_Growth_Total_Calc': 'YoY_Growth_Total', 'QoQ_Growth_Total_Calc': 'QoQ_Growth_Total'}, inplace=True)
+    df.drop(columns=['Registrations_Total_Calc'], inplace=True)
+    
+    return df
+
+def calculate_market_share(df, date_range):
+    """
+    Calculates the market share for each manufacturer for a given date range.
+    """
+    if df.empty:
+        return pd.DataFrame()
+
+    start_date, end_date = date_range
+    filtered_df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
+
+    total_registrations = filtered_df['Registrations'].sum()
+    if total_registrations == 0:
+        return pd.DataFrame()
+
+    market_share_df = filtered_df.groupby('Manufacturer')['Registrations'].sum().reset_index()
+    market_share_df['Market_Share'] = (market_share_df['Registrations'] / total_registrations) * 100
+    
+    return market_share_df.sort_values(by='Market_Share', ascending=False)
+
 def main():
-    """
-    Main function to process the raw data and save the processed file.
-    """
     raw_data_path = 'data/raw/vahan_data_raw.csv'
     
     if os.path.exists(raw_data_path):

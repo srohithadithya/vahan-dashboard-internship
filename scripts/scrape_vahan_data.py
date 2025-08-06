@@ -4,12 +4,7 @@ from datetime import date
 import os
 
 def generate_synthetic_vahan_data():
-    """
-    Generates a synthetic dataset for Vahan vehicle registrations.
-
-    Returns:
-        pd.DataFrame: A DataFrame containing synthetic registration data.
-    """
+    """Generates a synthetic dataset for Vahan vehicle registrations."""
     start_date = date(2022, 1, 1)
     end_date = date.today()
     
@@ -45,16 +40,13 @@ def generate_synthetic_vahan_data():
     return df
 
 def main():
-    """
-    Main function to generate and save the synthetic data.
-    """
+    """Main function to generate and save the synthetic data."""
     print("Generating synthetic Vahan data...")
     synthetic_df = generate_synthetic_vahan_data()
     
     raw_data_dir = 'data/raw'
     os.makedirs(raw_data_dir, exist_ok=True)
     
-    # Save the raw data to a fixed file name
     file_path = os.path.join(raw_data_dir, 'vahan_data_raw.csv')
     synthetic_df.to_csv(file_path, index=False)
     

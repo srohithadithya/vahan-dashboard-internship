@@ -17,6 +17,5 @@ def load_processed_data(file_path='data/processed/vahan_data_processed.csv'):
         return pd.DataFrame()
         
     df = pd.read_csv(file_path)
-    # Ensure the 'Date' column is a proper datetime object
     df['Date'] = pd.to_datetime(df['Date'])
     return df
